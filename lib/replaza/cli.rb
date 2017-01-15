@@ -12,7 +12,7 @@ module Replaza
             agent = RegionAgent.new(ua)
             form = RequestForm.new({'action' => 'ip.php'}, {'name' => 'ip'})
             html = agent.post(SOURCEURL, ip, form).content.toutf8
-            content = Parser::parse(html).each do |content|
+            Parser::parse(html).each do |content|
                 puts content.join(': ')
             end
         end
