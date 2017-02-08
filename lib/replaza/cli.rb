@@ -15,6 +15,9 @@ module Replaza
             Parser::parse(html, 'table[@class="result"] > tr')
                 .map {|node| [node.css('th').inner_text, node.css('td').inner_text]}
                 .each {|content| puts content.join(': ')}
+
+            whois = Parser::parse(html, 'form[@name="ip_result"] > div[@class="result"] > pre')
+            puts whois.inner_text
         end
     end
 
