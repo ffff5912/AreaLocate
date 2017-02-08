@@ -35,7 +35,7 @@ module Replaza
     end
 
     class Parser
-        def self.parse(html, selector, &block)
+        def self.parse(html, selector)
             document = Nokogiri::HTML(html, nil, 'utf-8')
             nodes = document.search(selector)
         end
