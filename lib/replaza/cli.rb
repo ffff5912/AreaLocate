@@ -12,9 +12,9 @@ module Replaza
             agent = RegionAgent.new(ua)
             form = RequestForm.new({'action' => 'ip.php'}, {'name' => 'ip'})
             html = agent.post(SOURCEURL, ip, form).content.toutf8
-            Parser::parse(html).each do |content|
-                puts content.join(': ')
-            end
+            Parser::parse(html, 'table[@class="result"] > tr')
+                .map {|node| [node.css('th').inner_text, node.css('td').inner_text]}
+                .each {|content| puts content.join(': ')}
         end
     end
 
@@ -32,11 +32,9 @@ module Replaza
     end
 
     class Parser
-        def self.parse(html)
+        def self.parse(html, selector, &block)
             document = Nokogiri::HTML(html, nil, 'utf-8')
-            document.search('table[@class="result"] > tr').map do |node|
-                [node.css('th').inner_text, node.css('td').inner_text]
-            end
+            nodes = document.search(selector)
         end
     end
 
@@ -44,7 +42,7 @@ module Replaza
         attr_reader :action, :field
         def initialize(action, field)
             @action = action
-            @field = field 
+            @field = field
         end
     end
 end
