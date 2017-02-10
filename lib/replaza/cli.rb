@@ -5,6 +5,7 @@ require 'mechanize'
 
 module Replaza
     SOURCEURL = 'http://www.iphiroba.jp/'
+    KAKUNINKUN = 'http://kakunin.net/'
 
     class CLI < Thor
         desc "bundle exec exe/replaza find {ip address} {ua}", ''
@@ -18,6 +19,15 @@ module Replaza
 
             whois = Parser::parse(html, 'form[@name="ip_result"] > div[@class="result"] > pre')
             puts whois.inner_text
+        end
+
+        desc "bundle exec exe/replaza myip [ua]", ''
+        def myip(ua = 'Mac Safari')
+            agent = RegionAgent.new(ua)
+            html = agent.get(KAKUNINKUN).content.toutf8
+            Parser::parse(html, 'table > tr')
+                .map {|node| node.css('td').inner_text}
+                .each {|content| puts content.gsub(/[\n|\t| ]+/, ' ')                }
         end
     end
 
