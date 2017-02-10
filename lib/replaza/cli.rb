@@ -27,6 +27,10 @@ module Replaza
             @agent.user_agent = ua
         end
 
+        def get(url)
+            @agent.get(url)
+        end
+
         def post(url, ip, request_form)
             form = @agent.get(url).form_with(request_form.action)
             form.field_with(request_form.field).value = ip
