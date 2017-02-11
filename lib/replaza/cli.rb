@@ -26,8 +26,7 @@ module Replaza
             agent = RegionAgent.new(ua)
             html = agent.get(KAKUNINKUN).content.toutf8
             Parser::parse(html, 'table > tr')
-                .map {|node| node.css('td').inner_text}
-                .each {|content| puts content.gsub(/[\n|\t| ]+/, ' ')                }
+                .map {|node| puts node.css('td').inner_text.gsub(/[\n|\t| ]+/, ' ')}
         end
     end
 
